@@ -2,8 +2,8 @@
 OpenWISP Notifications
 **********************
 
-.. image:: https://travis-ci.org/openwisp/openwisp-notifications.svg?branch=master
-   :target: https://travis-ci.org/openwisp/openwisp-notifications
+.. image:: https://github.com/openwisp/openwisp-notifications/workflows/OpenWISP%20CI%20Build/badge.svg?branch=master
+   :target: https://github.com/openwisp/openwisp-notifications/actions?query=workflow%3A%22OpenWISP+CI+Build%22
    :alt: CI build status
 
 .. image:: https://coveralls.io/repos/github/openwisp/openwisp-notifications/badge.svg?branch=master
@@ -385,7 +385,7 @@ Notification Cache
 
 In a typical OpenWISP installation, ``actor``, ``action_object`` and ``target`` objects are same
 for a number of notifications. To optimize database queries, these objects are cached using
-`Django’s cache framework <https://docs.djangoproject.com/en/3.0/topics/cache/>`_.
+`Django's cache framework <https://docs.djangoproject.com/en/3.0/topics/cache/>`_.
 The cached values are updated automatically to reflect actual data from database. You can control
 the duration of caching these objects using
 `OPENWISP_NOTIFICATIONS_CACHE_TIMEOUT setting <#OPENWISP_NOTIFICATIONS_CACHE_TIMEOUT>`_.
@@ -946,6 +946,41 @@ Delete object notification setting
 
     DELETE /api/v1/notification/ignore/{app_label}/{model_name}/{object_id}/
 
+
+Management Commands
+-------------------
+
+``populate_notification_preferences``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This command will populate notification preferences for all users for organizations
+they are member of.
+
+Example usage:
+
+.. code-block:: shell
+
+    # cd tests/
+    ./manage.py populate_notification_preferences
+
+**Note**: Before running this command make sure that the celery broker is
+running and **reachable** by celery workers.
+
+``create_notification``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This command will create a dummy notification with ``default`` notification type
+for the members of ``default`` organization.
+This command is primarily provided for the sole purpose of testing notification
+in development only.
+
+Example usage:
+
+.. code-block:: shell
+
+    # cd tests/
+    ./manage.py create_notification
+
 Installing for development
 --------------------------
 
@@ -1023,16 +1058,6 @@ When running the last line of the previous example, the environment variable ``S
 the sample app in ``/tests/openwisp2/`` which is a simple django app that extend ``openwisp-notifications``
 with the sole purpose of testing its extensibility, for more information regarding this concept,
 read the following section.
-
-While testing, if you need to have notifications present in the database you can use
-``create_notification`` management command to create a dummy notification.
-
-Run following command on terminal to create a notification:
-
-.. code-block:: shell
-
-    # (cd tests)
-    ./manage.py create_notification
 
 Extending openwisp-notifications
 --------------------------------
